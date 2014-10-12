@@ -14,4 +14,4 @@ var header = "// Do not edit the parser directly. This is a generated file creat
 var umd    = "module.exports = ";
 
 var parser = peg.buildParser(fs.readFileSync(path.join(root, "src", "js-blade.yaml"), "utf8"), options);
-fs.writeFileSync(path.join(root, "lib", "parser.js"), [header, umd].join("\n") + parser);
+fs.writeFileSync(path.join(root, "src", "parser.js"), [header, umd].join("\n") + parser);
