@@ -1,0 +1,22 @@
+{
+  "name": "js-blade",
+  "version": "1.0.0",
+  "description": "Javascript port of Laravel's Blade Templating language for NodeJS",
+  "main": "example.js",
+  "scripts": {
+    "test": "gulp lint && mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pegjs": "^0.8.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "gulp": "^3.8.8",
+    "gulp-jscs": "^1.1.2",
+    "gulp-jshint": "^1.8.5",
+    "mocha": "^1.21.5",
+    "multiline": "^1.0.1"
+  }
+}

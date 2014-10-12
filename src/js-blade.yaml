@@ -1,0 +1,54 @@
+start
+  = body
+
+/*-------------------------------------------------------------------------------------------------------------------------------------
+   body is defined as anything that matches with the part 0 or more times
+---------------------------------------------------------------------------------------------------------------------------------------*/
+body
+  = p:item*
+
+item
+  = section / yield / buffer
+
+buffer
+  = e:eol w:ws*
+  { return [ "buffer", e, w.join(''), column() ] }
+  / b:(!section !end_tag !yield c:. { return c })+
+  { return [ "buffer", b.join(''), column() ] }
+
+section
+  = section_open name:section_name body:body n:end_tag? { return ['section', name, ['content', body], ["start", line()], n] }
+
+section_name
+  = open_brace out:[a-z]i+ close_brace { return out.join("") }
+
+section_open
+  = s:section_id "section"
+
+yield
+  = section_id "yield" name:section_name {return ['yield', name, column()]}
+
+section_id
+  = "@"
+
+end_tag "end tag"
+  = "@stop" { return ['stop', line()]}
+
+open_brace
+  = "(\""
+
+close_brace
+  = "\")"
+
+any
+  = (after:. {return after})+
+
+eol
+  = "\n"        //line feed
+  / "\r\n"      //carriage + line feed
+  / "\r"        //carriage return
+  / "\u2028"    //line separator
+  / "\u2029"    //paragraph separator
+
+ws
+  = [\t\v\f \u00A0\uFEFF] / eol
