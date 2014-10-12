@@ -17,7 +17,7 @@ buffer
   { return [ "buffer", b.join(''), column() ] }
 
 section
-  = section_open name:section_name body:body n:end_tag? { return ['section', name, ['content', body], {start: line(), end: n}] }
+  = section_open name:section_name b:buffer? body:body n:end_tag? { return ['section', name, ['content', body], {start: line(), end: n}] }
 
 section_name
   = open_brace out:[a-z]i+ close_brace { return out.join("") }
@@ -26,13 +26,13 @@ section_open
   = s:section_id "section"
 
 yield
-  = section_id "yield" name:section_name {return ['yield', name, {start: column()}]}
+  = section_id "yield" name:section_name b:buffer? {return ['yield', name, {start: column()}]}
 
 section_id
   = "@"
 
 end_tag "end tag"
-  = "@stop" { return line()}
+  = "@stop" b:buffer { return line() }
 
 open_brace
   = "(\""

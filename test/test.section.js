@@ -3,14 +3,14 @@ var blade   = require("../lib/blade").compile;
 var assert  = require("chai").assert;
 
 function debugOutput (string) {
-    var count = 0;
-    var out = "---------`Output Start`--------\n";
-    out += "~~~~~~~|";
+    var count = 1;
+    var out = "\n-------------------`Output Start`------------------\n";
+    out += "~~~1~~~|";
     out += string.replace(/\n/g, function () {
         count += 1;
         return "\n~~~"+count+"~~~|"
     });
-    out += "\n----------`Output END`---------\n";
+    out += "\n--------------------`Output END`-------------------\n";
     console.log(out);
 }
 
@@ -34,15 +34,16 @@ describe("@section", function(){
             <span>And this is a nested span</span>
         </p>
         @stop
-
-        <div>Hi there</div>
-        <header>
-            <h1>Page title</h1>
-            @yield("shane")
-        </header>
+        @section("ohno")
+        <div>Second block</div>
+        @stop
+        Hi there
+        @yield("shane")
+        Shane is here
+        @yield("ohno")
         */});
         var out = blade(template);
-        console.log(debugOutput(out));
+        debugOutput(out);
         assert.notInclude(out, "@section(\"shane\")");
     });
 });
