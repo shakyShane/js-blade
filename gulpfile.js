@@ -2,7 +2,6 @@ var gulp        = require("gulp");
 var jshint      = require("gulp-jshint");
 var jscs        = require("gulp-jscs");
 var gutil       = require("gulp-util");
-var Multistream = require('multistream');
 
 var src  = [
     "lib/*.js",
