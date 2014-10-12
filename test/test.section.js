@@ -4,18 +4,18 @@ var assert  = require("chai").assert;
 
 function debugOutput (string) {
     var count = 0;
-    var out = "~~~~~~~~~`Output Start`~~~~~~~~\n";
+    var out = "---------`Output Start`--------\n";
     out += "~~~~~~~|";
     out += string.replace(/\n/g, function () {
         count += 1;
         return "\n~~~"+count+"~~~|"
     });
-    out += "\n~~~~~~~~~`Output END`~~~~~~~~\n";
+    out += "\n----------`Output END`---------\n";
     console.log(out);
 }
 
 describe("@section", function(){
-    it.only("can remove the lines containing tags", function(){
+    it("can remove the lines containing tags", function(){
         var template = multi.stripIndent(function () {/*
          @section("shane")
          <p>This is within a section
@@ -25,10 +25,9 @@ describe("@section", function(){
          Hi there
          */});
         var out = blade(template);
-        debugOutput(out);
-        assert.notInclude(out, "@section(\"shane\")");
+        assert.deepEqual(out, "Hi there");
     });
-    it("can save content & place in @yield", function(){
+    it.only("can save content & place in @yield", function(){
         var template = multi.stripIndent(function () {/*
         @section("shane")
         <p>This is within a section
@@ -43,6 +42,7 @@ describe("@section", function(){
         </header>
         */});
         var out = blade(template);
+        console.log(debugOutput(out));
         assert.notInclude(out, "@section(\"shane\")");
     });
 });

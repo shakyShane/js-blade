@@ -26,7 +26,7 @@ section_open
   = s:section_id "section"
 
 yield
-  = section_id "yield" name:section_name {return ['yield', name, column()]}
+  = section_id "yield" name:section_name {return ['yield', name, {start: column()}]}
 
 section_id
   = "@"
