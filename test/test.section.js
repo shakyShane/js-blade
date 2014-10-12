@@ -33,7 +33,7 @@ describe("@section", function(){
         var out = blade(template);
         assert.deepEqual(out, "Hi there");
     });
-    it("can save indented content & place in @yield", function(){
+    it("can save `indented` content & place in @yield", function(){
         var template = multi.stripIndent(function () {/*
         @section("name")
             Shane
@@ -52,7 +52,7 @@ describe("@section", function(){
         var actual = blade(template);
         assert.equal(actual, expected);
     });
-    it("can save content & place in @yield", function() {
+    it("can save indented content & place in indented @yield", function() {
 
         var input = multi.stripIndent(function () {/*
         @section("firstblock")
@@ -73,7 +73,6 @@ describe("@section", function(){
          </main>
          */});
         var out = blade(input);
-        //debugOutput(out);
         assert.equal(out, expected);
     });
 });
