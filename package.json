@@ -13,10 +13,12 @@
   },
   "devDependencies": {
     "chai": "^1.9.2",
+    "dustjs-linkedin": "^2.4.2",
     "gulp": "^3.8.8",
     "gulp-jscs": "^1.1.2",
     "gulp-jshint": "^1.8.5",
     "gulp-util": "^3.0.1",
+    "handlebars": "^2.0.0",
     "mocha": "^1.21.5",
     "multiline": "^1.0.1",
     "tfunk": "^2.1.0"
