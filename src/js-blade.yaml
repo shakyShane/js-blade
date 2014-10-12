@@ -12,12 +12,12 @@ item
 
 buffer
   = e:eol w:ws*
-  { return [ "buffer", e, w.join(''), column() ] }
-  / b:(!section !end_tag !yield c:. { return c })+
+  { return [ "format", e, w.join(''), column() ] }
+  / b:(!section !section_stop !yield c:. { return c })+
   { return [ "buffer", b.join(''), column() ] }
 
 section
-  = section_open name:section_name b:buffer? body:body n:end_tag? { return ['section', name, ['content', body], {start: line(), end: n}] }
+  = section_open name:section_name eol:eol? body:body n:section_stop? { return ['section', name, ['content', body], {start: line(), end: n}] }
 
 section_name
   = open_brace out:[a-z]i+ close_brace { return out.join("") }
@@ -26,13 +26,13 @@ section_open
   = s:section_id "section"
 
 yield
-  = section_id "yield" name:section_name b:buffer? {return ['yield', name, {start: column()}]}
+  = section_id "yield" name:section_name eol:eol {return ['yield', name, {start: column()}]}
 
 section_id
   = "@"
 
-end_tag "end tag"
-  = "@stop" b:buffer { return line() }
+section_stop "section stop"
+  = "@stop" b:eol? { return line() }
 
 open_brace
   = "(\""

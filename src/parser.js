@@ -35,13 +35,13 @@ module.exports = (function() {
 
         peg$c0 = [],
         peg$c1 = peg$FAILED,
-        peg$c2 = function(e, w) { return [ "buffer", e, w.join(''), column() ] },
+        peg$c2 = function(e, w) { return [ "format", e, w.join(''), column() ] },
         peg$c3 = void 0,
         peg$c4 = { type: "any", description: "any character" },
         peg$c5 = function(c) { return c },
         peg$c6 = function(b) { return [ "buffer", b.join(''), column() ] },
         peg$c7 = null,
-        peg$c8 = function(name, b, body, n) { return ['section', name, ['content', body], {start: line(), end: n}] },
+        peg$c8 = function(name, eol, body, n) { return ['section', name, ['content', body], {start: line(), end: n}] },
         peg$c9 = /^[a-z]/i,
         peg$c10 = { type: "class", value: "[a-z]i", description: "[a-z]i" },
         peg$c11 = function(out) { return out.join("") },
@@ -49,10 +49,10 @@ module.exports = (function() {
         peg$c13 = { type: "literal", value: "section", description: "\"section\"" },
         peg$c14 = "yield",
         peg$c15 = { type: "literal", value: "yield", description: "\"yield\"" },
-        peg$c16 = function(name, b) {return ['yield', name, {start: column()}]},
+        peg$c16 = function(name, eol) {return ['yield', name, {start: column()}]},
         peg$c17 = "@",
         peg$c18 = { type: "literal", value: "@", description: "\"@\"" },
-        peg$c19 = { type: "other", description: "end tag" },
+        peg$c19 = { type: "other", description: "section stop" },
         peg$c20 = "@stop",
         peg$c21 = { type: "literal", value: "@stop", description: "\"@stop\"" },
         peg$c22 = function(b) { return line() },
@@ -316,7 +316,7 @@ module.exports = (function() {
         if (s3 !== peg$FAILED) {
           s4 = peg$currPos;
           peg$silentFails++;
-          s5 = peg$parseend_tag();
+          s5 = peg$parsesection_stop();
           peg$silentFails--;
           if (s5 === peg$FAILED) {
             s4 = peg$c3;
@@ -380,7 +380,7 @@ module.exports = (function() {
             if (s3 !== peg$FAILED) {
               s4 = peg$currPos;
               peg$silentFails++;
-              s5 = peg$parseend_tag();
+              s5 = peg$parsesection_stop();
               peg$silentFails--;
               if (s5 === peg$FAILED) {
                 s4 = peg$c3;
@@ -449,14 +449,14 @@ module.exports = (function() {
       if (s1 !== peg$FAILED) {
         s2 = peg$parsesection_name();
         if (s2 !== peg$FAILED) {
-          s3 = peg$parsebuffer();
+          s3 = peg$parseeol();
           if (s3 === peg$FAILED) {
             s3 = peg$c7;
           }
           if (s3 !== peg$FAILED) {
             s4 = peg$parsebody();
             if (s4 !== peg$FAILED) {
-              s5 = peg$parseend_tag();
+              s5 = peg$parsesection_stop();
               if (s5 === peg$FAILED) {
                 s5 = peg$c7;
               }
@@ -582,10 +582,7 @@ module.exports = (function() {
         if (s2 !== peg$FAILED) {
           s3 = peg$parsesection_name();
           if (s3 !== peg$FAILED) {
-            s4 = peg$parsebuffer();
-            if (s4 === peg$FAILED) {
-              s4 = peg$c7;
-            }
+            s4 = peg$parseeol();
             if (s4 !== peg$FAILED) {
               peg$reportedPos = s0;
               s1 = peg$c16(s3, s4);
@@ -624,7 +621,7 @@ module.exports = (function() {
       return s0;
     }
 
-    function peg$parseend_tag() {
+    function peg$parsesection_stop() {
       var s0, s1, s2;
 
       peg$silentFails++;
@@ -637,7 +634,10 @@ module.exports = (function() {
         if (peg$silentFails === 0) { peg$fail(peg$c21); }
       }
       if (s1 !== peg$FAILED) {
-        s2 = peg$parsebuffer();
+        s2 = peg$parseeol();
+        if (s2 === peg$FAILED) {
+          s2 = peg$c7;
+        }
         if (s2 !== peg$FAILED) {
           peg$reportedPos = s0;
           s1 = peg$c22(s2);
