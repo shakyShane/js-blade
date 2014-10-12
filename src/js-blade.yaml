@@ -12,7 +12,7 @@ item
 
 buffer
   = e:eol w:ws*
-  { return [ "format", e, w.join(''), column() ] }
+  { return [ "buffer", e, w.join(''), column() ] }
   / b:(!section !section_stop !yield c:. { return c })+
   { return [ "buffer", b.join(''), column() ] }
 
@@ -26,7 +26,7 @@ section_open
   = s:section_id "section"
 
 yield
-  = section_id "yield" name:section_name eol:eol {return ['yield', name, {start: column()}]}
+  = section_id "yield" name:section_name eol:eol? {return ['yield', name, {start: column()}]}
 
 section_id
   = "@"

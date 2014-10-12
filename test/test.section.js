@@ -60,5 +60,24 @@ describe("@section", function(){
         var out = blade(input);
         assert.equal(out, expected);
     });
+    it("can save multiple items as content & place in @yield", function() {
+
+        var input = multi.stripIndent(function () {/*
+        @section("name")
+        Shane
+        Osbourne
+        @stop
+
+        @yield("name")
+        */});
+
+        var expected = multi.stripIndent(function () {/*
+
+        Shane
+        Osbourne
+        */});
+        var out = blade(input);
+        assert.equal(out, expected);
+    });
 });
 

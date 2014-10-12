@@ -35,7 +35,7 @@ module.exports = (function() {
 
         peg$c0 = [],
         peg$c1 = peg$FAILED,
-        peg$c2 = function(e, w) { return [ "format", e, w.join(''), column() ] },
+        peg$c2 = function(e, w) { return [ "buffer", e, w.join(''), column() ] },
         peg$c3 = void 0,
         peg$c4 = { type: "any", description: "any character" },
         peg$c5 = function(c) { return c },
@@ -583,6 +583,9 @@ module.exports = (function() {
           s3 = peg$parsesection_name();
           if (s3 !== peg$FAILED) {
             s4 = peg$parseeol();
+            if (s4 === peg$FAILED) {
+              s4 = peg$c7;
+            }
             if (s4 !== peg$FAILED) {
               peg$reportedPos = s0;
               s1 = peg$c16(s3, s4);
