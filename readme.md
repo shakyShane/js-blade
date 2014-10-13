@@ -7,14 +7,7 @@
 - [x] `@section`
 - [x] `@yield`
 - [ ] `@extends`
-- [ ] `@if` `@else` `@elseif`
-- [ ] `@unless`
 - [ ] `@include`
-- [ ] `@for`
-- [ ] `@foreach`
-- [ ] `@forelse`
-- [ ] `@while`
-
 
 ##`@section` & `@yield`
 One thing that has always driven me CRAZY about all templating
