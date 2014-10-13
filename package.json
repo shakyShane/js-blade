@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "eazy-logger": "^1.4.0",
     "pegjs": "^0.8.0"
   },
   "devDependencies": {

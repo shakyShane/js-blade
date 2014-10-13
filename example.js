@@ -1,7 +1,15 @@
 var multi   = require("multiline");
 var tfunk   = require("tfunk");
 var blade   = require("./lib/blade").compile;
+var logger  = require("eazy-logger").Logger({
+    level: "debug",
+    prefix: "{blue:[{gray:Blade}]",
+    useLevelPrefixes: true
+});
 
+var file    = require("./lib/file")(null, logger);
+
+console.log(file(".travis.yml"));
 
 var template = multi(function () {/*
 @section("shane")
@@ -18,10 +26,10 @@ var template = multi(function () {/*
 */});
 
 var out = blade(template);
-console.log("~~~~~~~~~~ Js Blade ~~~~~~~~~~~~");
-console.log(out.replace(/ /g, tfunk('{magenta:.}')));
-console.log("~~~~~~~~ Js Blade end ~~~~~~~~~~");
-console.log("\n\n");
+//console.log("~~~~~~~~~~ Js Blade ~~~~~~~~~~~~");
+//console.log(out.replace(/ /g, tfunk('{magenta:.}')));
+//console.log("~~~~~~~~ Js Blade end ~~~~~~~~~~");
+//console.log("\n\n");
 
 var hbTemplate = multi(function () {/*
 <div>Hi there</div>
@@ -40,7 +48,7 @@ Handlebars.registerPartial('shane', function() {
 */});
 });
 
-var out = Handlebars.compile(hbTemplate)();
-console.log("~~~~~~~~~~ Handlebars ~~~~~~~~~~~~");
-console.log(out.replace(/ /g, tfunk('{magenta:.}')));
-console.log("~~~~~~~~ Handlebars ~~~~~~~~~~");
+//var out = Handlebars.compile(hbTemplate)();
+//console.log("~~~~~~~~~~ Handlebars ~~~~~~~~~~~~");
+//console.log(out.replace(/ /g, tfunk('{magenta:.}')));
+//console.log("~~~~~~~~ Handlebars ~~~~~~~~~~");
