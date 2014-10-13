@@ -18,12 +18,29 @@ describe("@includes", function(){
         node_js:
           - '0.10'
 
+        
         After
          */});
         var out = blade(template);
-        //dlog(out);
         assert.equal(out, expected);
-        //console.log(out);
+    });
+    it("includes a file with indentation", function(){
+        var template = multi.stripIndent(function () {/*
+         Before
+             @include(".travis.yml")
+         After
+         */});
+        var expected = multi.stripIndent(function () {/*
+         Before
+             language: node_js
+             node_js:
+               - '0.10'
+             
+             
+         After
+         */});
+        var out      = blade(template);
+        assert.equal(out, expected);
     });
 });
 
