@@ -2,14 +2,24 @@ var multi   = require("multiline");
 var tfunk   = require("tfunk");
 var blade   = require("./lib/blade").compile;
 var logger  = require("eazy-logger").Logger({
-    level: "debug",
-    prefix: "{blue:[{gray:Blade}]",
-    useLevelPrefixes: true
+    level: "trace",
+    prefix: "{blue:[{gray:JS Blade}]",
+    prefixes: {
+        trace: "{cyan:[trace]} "
+    },
+    useLevelPrefixes: true,
+    custom: {
+        "file": function (string) {
+            return this.compile("{magenta:" + string + "}");
+        }
+    }
 });
 
-var file    = require("./lib/file")(null, logger);
+var File    = require("./lib/file").File;
+var file    = new File(null, logger);
 
-console.log(file(".travis.yml"));
+file.getFile(".travis.yml");
+file.getFile(".travis.yml");
 
 var template = multi(function () {/*
 @section("shane")
