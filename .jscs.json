@@ -2,6 +2,7 @@
   "preset": "google",
   "validateIndentation": 4,
   "validateQuoteMarks": "\"",
+  "requireOperatorBeforeLineBreak": null,
   "requireSpacesInFunctionExpression": {
     "beforeOpeningRoundBrace": true,
     "beforeOpeningCurlyBrace": true
