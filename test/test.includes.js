@@ -5,13 +5,15 @@ var multi   = require("multiline");
 var assert  = require("chai").assert;
 
 
-describe("@section", function(){
-    it("removes all lines in section + lines with tags", function(){
+describe("@includes", function(){
+    it("includes a file", function(){
         var template = multi.stripIndent(function () {/*
-         @include(".travis.yml")
+        Shane
+        @include(".travis./ss.sas//as/asasssss/ss/2345678jhewgerfyml")
+        is ace
          */});
         var out = blade(template);
-        assert.deepEqual(out, "Hi there");
+        console.log(out);
     });
 });
 
