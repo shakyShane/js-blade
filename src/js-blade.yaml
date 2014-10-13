@@ -17,22 +17,18 @@ buffer
   { return [ "buffer", b.join(''), column() ] }
 
 include
-  = "@include" name:section_name {return ['include', name]}
+  = "@include" name:tag_name eol:eol? {return ['include', name, {start: column()}]}
 
 section
-  = section_open name:section_name eol:eol? body:body n:section_stop? { return ['section', name, ['content', body], {start: line(), end: n}] }
+  = "@section" name:tag_name eol:eol? body:body n:section_stop? {
+      return ['section', name, ['content', body], {start: line(), end: n}]
+  }
 
-section_name
+tag_name
   = open_brace out:(!quote c:. {return c})+ close_brace { return out.join("") }
 
-section_open
-  = s:section_id "section"
-
 yield
-  = section_id "yield" name:section_name eol:eol? {return ['yield', name, {start: column()}]}
-
-section_id
-  = "@"
+  = "@yield" name:tag_name eol:eol? {return ['yield', name, {start: column()}]}
 
 section_stop "section stop"
   = "@stop" b:eol? { return line() }

@@ -1,19 +1,6 @@
 var multi   = require("multiline");
 var tfunk   = require("tfunk");
 var blade   = require("./lib/blade").compile;
-var logger  = require("eazy-logger").Logger({
-    level: "trace",
-    prefix: "{blue:[{gray:JS Blade}]",
-    prefixes: {
-        trace: "{cyan:[trace]} "
-    },
-    useLevelPrefixes: true,
-    custom: {
-        "file": function (string) {
-            return this.compile("{magenta:" + string + "}");
-        }
-    }
-});
 
 var File    = require("./lib/file").File;
 var file    = new File(null, logger);
