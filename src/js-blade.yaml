@@ -8,37 +8,39 @@ body
   = p:item*
 
 item
-  = section / yield / buffer
+  = section / yield / include / buffer
 
 buffer
   = e:eol w:ws*
   { return [ "buffer", e, w.join(''), column() ] }
-  / b:(!section !section_stop !yield c:. { return c })+
+  / b:(!section !section_stop !include !yield c:. { return c })+
   { return [ "buffer", b.join(''), column() ] }
 
+include
+  = "@include" name:tag_name eol:eol? {return ['include', name, {start: column()}]}
+
 section
-  = section_open name:section_name eol:eol? body:body n:section_stop? { return ['section', name, ['content', body], {start: line(), end: n}] }
+  = "@section" name:tag_name eol:eol? body:body n:section_stop? {
+      return ['section', name, ['content', body], {start: line(), end: n}]
+  }
 
-section_name
-  = open_brace out:[a-z]i+ close_brace { return out.join("") }
-
-section_open
-  = s:section_id "section"
+tag_name
+  = open_brace out:(!quote c:. {return c})+ close_brace { return out.join("") }
 
 yield
-  = section_id "yield" name:section_name eol:eol? {return ['yield', name, {start: column()}]}
-
-section_id
-  = "@"
+  = "@yield" name:tag_name eol:eol? {return ['yield', name, {start: column()}]}
 
 section_stop "section stop"
   = "@stop" b:eol? { return line() }
 
+quote
+  = '"'
+
 open_brace
-  = "(\""
+  = '(' quote
 
 close_brace
-  = "\")"
+  = quote ')'
 
 any
   = (after:. {return after})+
@@ -52,3 +54,4 @@ eol
 
 ws
   = [\t\v\f \u00A0\uFEFF] / eol
+

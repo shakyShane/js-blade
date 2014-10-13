@@ -2,6 +2,11 @@ var multi   = require("multiline");
 var tfunk   = require("tfunk");
 var blade   = require("./lib/blade").compile;
 
+var File    = require("./lib/file").File;
+var file    = new File(null, logger);
+
+file.getFile(".travis.yml");
+file.getFile(".travis.yml");
 
 var template = multi(function () {/*
 @section("shane")
@@ -18,10 +23,10 @@ var template = multi(function () {/*
 */});
 
 var out = blade(template);
-console.log("~~~~~~~~~~ Js Blade ~~~~~~~~~~~~");
-console.log(out.replace(/ /g, tfunk('{magenta:.}')));
-console.log("~~~~~~~~ Js Blade end ~~~~~~~~~~");
-console.log("\n\n");
+//console.log("~~~~~~~~~~ Js Blade ~~~~~~~~~~~~");
+//console.log(out.replace(/ /g, tfunk('{magenta:.}')));
+//console.log("~~~~~~~~ Js Blade end ~~~~~~~~~~");
+//console.log("\n\n");
 
 var hbTemplate = multi(function () {/*
 <div>Hi there</div>
@@ -40,7 +45,7 @@ Handlebars.registerPartial('shane', function() {
 */});
 });
 
-var out = Handlebars.compile(hbTemplate)();
-console.log("~~~~~~~~~~ Handlebars ~~~~~~~~~~~~");
-console.log(out.replace(/ /g, tfunk('{magenta:.}')));
-console.log("~~~~~~~~ Handlebars ~~~~~~~~~~");
+//var out = Handlebars.compile(hbTemplate)();
+//console.log("~~~~~~~~~~ Handlebars ~~~~~~~~~~~~");
+//console.log(out.replace(/ /g, tfunk('{magenta:.}')));
+//console.log("~~~~~~~~ Handlebars ~~~~~~~~~~");
