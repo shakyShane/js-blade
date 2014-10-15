@@ -28,7 +28,7 @@ tag_name
   = open_brace out:(!quote c:. {return c})+ close_brace { return out.join("") }
 
 yield
-  = "@yield" name:tag_name eol:eol? {return ['yield', name, {start: column()}]}
+  = "@yield" name:tag_name w:ws? e:eol? {return ['yield', name, ['after', e || '', w || ''], {start: column()}]}
 
 section_stop "section stop"
   = "@stop" b:eol? { return line() }

@@ -65,18 +65,17 @@ describe("@section", function(){
         var input = multi.stripIndent(function () {/*
         @section("name")
         Shane
-        Osbourne
         @stop
-
-        @yield("name")
+            Hi there
+            @yield("name")
         */});
 
-        var expected = multi.stripIndent(function () {/*
-
-        Shane
-        Osbourne
+        var expected = multi(function () {/*
+    Hi there
+    Shane
         */});
         var out = blade(input);
+        dlog(out);
         assert.equal(out, expected);
     });
     it("can save content from multiple sections with the same name & place in @yield ", function() {
@@ -84,7 +83,6 @@ describe("@section", function(){
         var input = multi.stripIndent(function () {/*
         @section("name")
         Shane
-
         @stop
         @section("name")
         Osbourne
@@ -96,7 +94,6 @@ describe("@section", function(){
         var expected = multi.stripIndent(function () {/*
 
         Shane
-
         Osbourne
         */});
         var out = blade(input);

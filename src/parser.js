@@ -53,7 +53,7 @@ module.exports = (function() {
         peg$c15 = function(out) { return out.join("") },
         peg$c16 = "@yield",
         peg$c17 = { type: "literal", value: "@yield", description: "\"@yield\"" },
-        peg$c18 = function(name, eol) {return ['yield', name, {start: column()}]},
+        peg$c18 = function(name, w, e) {return ['yield', name, ['after', e || '', w || ''], {start: column()}]},
         peg$c19 = { type: "other", description: "section stop" },
         peg$c20 = "@stop",
         peg$c21 = { type: "literal", value: "@stop", description: "\"@stop\"" },
@@ -668,7 +668,7 @@ module.exports = (function() {
     }
 
     function peg$parseyield() {
-      var s0, s1, s2, s3;
+      var s0, s1, s2, s3, s4;
 
       s0 = peg$currPos;
       if (input.substr(peg$currPos, 6) === peg$c16) {
@@ -681,14 +681,23 @@ module.exports = (function() {
       if (s1 !== peg$FAILED) {
         s2 = peg$parsetag_name();
         if (s2 !== peg$FAILED) {
-          s3 = peg$parseeol();
+          s3 = peg$parsews();
           if (s3 === peg$FAILED) {
             s3 = peg$c9;
           }
           if (s3 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c18(s2, s3);
-            s0 = s1;
+            s4 = peg$parseeol();
+            if (s4 === peg$FAILED) {
+              s4 = peg$c9;
+            }
+            if (s4 !== peg$FAILED) {
+              peg$reportedPos = s0;
+              s1 = peg$c18(s2, s3, s4);
+              s0 = s1;
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c1;
+            }
           } else {
             peg$currPos = s0;
             s0 = peg$c1;
