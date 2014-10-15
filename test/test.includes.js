@@ -1,74 +1,79 @@
-var blade   = require("../lib/blade").compile;
+var blade   = require("../lib/blade");
+var compile = blade.compile;
+var reset   = blade.reset;
 var dlog    = require("./debugger").log;
 
 var multi   = require("multiline");
 var assert  = require("chai").assert;
+var sinon   = require("sinon");
+var fs      = require("fs");
 
 
 describe("@includes", function(){
-    it("includes a file", function(){
-        var template = multi.stripIndent(function () {/*
-        Before
-        @include(".travis.yml")
-        After
-         */});
-        var expected = multi.stripIndent(function () {/*
-        Before
-        language: node_js
-        node_js:
-          - '0.10'
-
-        
-        After
-         */});
-        var out = blade(template);
-        assert.equal(out, expected);
+    var existsStub;
+    var fsReadStub;
+    before(function () {
+        existsStub = sinon.stub(fs, "exists").returns(true);
+        fsReadStub = sinon.stub(fs, "readFileSync");
+    });
+    afterEach(function () {
+        fsReadStub.reset();
+        reset();
+    });
+    after(function () {
+        existsStub.restore();
+        fsReadStub.restore();
     });
     it("includes a file with indentation", function(){
-        var template = multi.stripIndent(function () {/*
-         Before
-             @include(".travis.yml")
-         After
+        var incFile  = multi(function () {/*
+Some nested
+    Content
+        Here
+    that's
+Correctly
+                Indented
          */});
-        var expected = multi.stripIndent(function () {/*
-         Before
-             language: node_js
-             node_js:
-               - '0.10'
-             
-             
-         After
+        var template = multi(function () {/*
+Before
+    @include(".travis.yml")
+After
          */});
-        var out      = blade(template);
+        var expected = multi(function () {/*
+Before
+    Some nested
+        Content
+            Here
+        that's
+    Correctly
+                    Indented
+After
+         */});
+        fsReadStub.returns(incFile);
+        var out      = compile(template);
         assert.equal(out, expected);
     });
-    it.skip("can process included content", function () {
+    it("can process included content", function () {
+        
+        var input = multi(function () {/*
+@include("whateves.whatevs")
+World!
+*/});
 
-        var myFile = multi.stripIndent(function () {/*
-         Hello
-         @section("shane")
-         Hello
-         @stop
-         There
-         */
-        });
+        fsReadStub.returns("Hello");
 
-        var input = multi.stripIndent(function () {/*
-         @section("shane") 
-         After @stop
-         Before
-         @yield("shane")
-         I Am awesome
-         */
-        });
+        var out = compile(input);
+        assert.equal(out, "Hello\nWorld!");
+    });
+    it("can process included content on same line", function () {
 
-        var existsStub = sinon.stub(fs, "exists").returns(true);
-        var fsReadStub = sinon.stub(fs, "readFileSync")
-            .onFirstCall()
-            .returns(myFile)
+        var input = multi(function () {/*
+Hello @include("whateves.whatevs")!
+*/});
 
-        var out = blade(input);
-        dlog(out);
+        fsReadStub.returns("World");
+
+        var out = compile(input);
+        assert.equal(out, "Hello World!");
     });
 });
 

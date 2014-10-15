@@ -75,7 +75,6 @@ describe("@section", function(){
     Shane
         */});
         var out = blade(input);
-        dlog(out);
         assert.equal(out, expected);
     });
     it("can save content from multiple sections with the same name & place in @yield ", function() {
@@ -87,12 +86,14 @@ describe("@section", function(){
         @section("name")
         Osbourne
         @stop
+        Other Content
 
         @yield("name")
         */});
 
         var expected = multi.stripIndent(function () {/*
-
+        Other Content
+        
         Shane
         Osbourne
         */});
