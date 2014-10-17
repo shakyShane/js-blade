@@ -18,12 +18,12 @@ buffer
 
 include
   = "@include" name:tag_name a:after_tag {
-      return ['include', name, ['after'].concat(a), {start: column()}]
+      return ['include', {line: line(), column: column()}, name, ['after'].concat(a)]
   }
 
 section
   = "@section" name:tag_name eol:eol? body:body n:section_stop? {
-      return ['section', name, ['content', body], {start: line(), end: n}]
+      return ['section', {line: line(), column: column()}, name, ['content', body], {end: n}]
   }
 
 tag_name

@@ -43,13 +43,13 @@ module.exports = (function() {
         peg$c7 = "@include",
         peg$c8 = { type: "literal", value: "@include", description: "\"@include\"" },
         peg$c9 = function(name, a) {
-              return ['include', name, ['after'].concat(a), {start: column()}]
+              return ['include', {line: line(), column: column()}, name, ['after'].concat(a)]
           },
         peg$c10 = "@section",
         peg$c11 = { type: "literal", value: "@section", description: "\"@section\"" },
         peg$c12 = null,
         peg$c13 = function(name, eol, body, n) {
-              return ['section', name, ['content', body], {start: line(), end: n}]
+              return ['section', {line: line(), column: column()}, name, ['content', body], {end: n}]
           },
         peg$c14 = function(c) {return c},
         peg$c15 = function(out) { return out.join("") },
