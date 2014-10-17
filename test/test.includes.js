@@ -13,7 +13,7 @@ describe("@includes", function(){
     var existsStub;
     var fsReadStub;
     before(function () {
-        existsStub = sinon.stub(fs, "exists").returns(true);
+        existsStub = sinon.stub(fs, "existsSync").returns(true);
         fsReadStub = sinon.stub(fs, "readFileSync");
     });
     afterEach(function () {
@@ -83,7 +83,6 @@ World!
     it("can process recursive includes", function () {
         
         var input = 'Hello @include("first")';
-        
         fsReadStub
             .onFirstCall()
             .returns('there @include("second")!')
@@ -93,5 +92,11 @@ World!
         var out = compile(input);
         assert.equal(out, "Hello there Shane!");
     });
+    it("Gives good errors when include not found", function () {
+        
+        var input = 'Hello @include("first")';
+        existsStub.returns(false);
+        var out = compile(input);
+        assert.equal(out, 'Hello <span class="__blade__error__">@include failed: `first` not found.</span>');
+    });
 });
-
