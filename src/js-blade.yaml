@@ -30,7 +30,9 @@ tag_name
   = open_brace out:(!quote c:. {return c})+ close_brace { return out.join("") }
 
 yield
-  = "@yield" name:tag_name a:after_tag {return ['yield', name, ['after'].concat(a), {start: column()}]}
+  = "@yield" name:tag_name a:after_tag {
+      return ['yield', {line: line(), column: column()}, name, ['after'].concat(a)]
+  }
 
 section_stop "section stop"
   = "@stop" b:eol? { return line() }

@@ -55,7 +55,9 @@ module.exports = (function() {
         peg$c15 = function(out) { return out.join("") },
         peg$c16 = "@yield",
         peg$c17 = { type: "literal", value: "@yield", description: "\"@yield\"" },
-        peg$c18 = function(name, a) {return ['yield', name, ['after'].concat(a), {start: column()}]},
+        peg$c18 = function(name, a) {
+              return ['yield', {line: line(), column: column()}, name, ['after'].concat(a)]
+          },
         peg$c19 = { type: "other", description: "section stop" },
         peg$c20 = "@stop",
         peg$c21 = { type: "literal", value: "@stop", description: "\"@stop\"" },
