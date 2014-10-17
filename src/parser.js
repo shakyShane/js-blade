@@ -35,11 +35,11 @@ module.exports = (function() {
 
         peg$c0 = [],
         peg$c1 = peg$FAILED,
-        peg$c2 = function(e, w) { return [ "buffer", e, w.join(''), column() ] },
+        peg$c2 = function(e, w) { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] },
         peg$c3 = void 0,
         peg$c4 = { type: "any", description: "any character" },
         peg$c5 = function(c) { return c },
-        peg$c6 = function(b) { return [ "buffer", b.join(''), column() ] },
+        peg$c6 = function(b) { return [ "buffer", {line: line(), column: column()}, b.join('') ] },
         peg$c7 = "@include",
         peg$c8 = { type: "literal", value: "@include", description: "\"@include\"" },
         peg$c9 = function(name, a) {

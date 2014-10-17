@@ -12,9 +12,9 @@ item
 
 buffer
   = e:eol w:ws*
-  { return [ "buffer", e, w.join(''), column() ] }
+  { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] }
   / b:(!section !section_stop !include !yield c:. { return c })+
-  { return [ "buffer", b.join(''), column() ] }
+  { return [ "buffer", {line: line(), column: column()}, b.join('') ] }
 
 include
   = "@include" name:tag_name a:after_tag {
