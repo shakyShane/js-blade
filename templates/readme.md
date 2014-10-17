@@ -2,4 +2,6 @@
 
 ###Gulpfile example
 
-    {% include ".travis.yml" %}
+@include("templates/readme2.md")
+
+@yield("shane") from a different file
