@@ -18,6 +18,7 @@ describe("@includes", function(){
     });
     afterEach(function () {
         fsReadStub.reset();
+        existsStub.reset();
         reset();
     });
     after(function () {
@@ -66,14 +67,31 @@ World!
     });
     it("can process included content on same line", function () {
 
-        var input = multi(function () {/*
-Hello @include("whateves.whatevs")!
-*/});
+        var input = 'Hello @include("whateves.whatevs")!';
 
         fsReadStub.returns("World");
 
         var out = compile(input);
         assert.equal(out, "Hello World!");
+    });
+    it("can process multiple includes side-by-side", function () {
+        var input = 'Hello @include("whateves.whatevs")@include("whatevbooya")!';
+        fsReadStub.returns("World");
+        var out = compile(input);
+        assert.equal(out, "Hello WorldWorld!");
+    });
+    it("can process recursive includes", function () {
+        
+        var input = 'Hello @include("first")';
+        
+        fsReadStub
+            .onFirstCall()
+            .returns('there @include("second")!')
+            .onSecondCall()
+            .returns("Shane");
+        
+        var out = compile(input);
+        assert.equal(out, "Hello there Shane!");
     });
 });
 

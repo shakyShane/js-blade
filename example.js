@@ -1,12 +1,29 @@
 var multi   = require("multiline");
-var tfunk   = require("tfunk");
-var blade   = require("./lib/blade").compile;
+var tfunk     = require("tfunk");
+var nunjucks = require("nunjucks");
+var blade     = require("./lib/blade").compile;
+var logger    = require("eazy-logger").Logger({
+    level: "info",
+    prefix: "{blue:[{gray:JS Blade}]",
+    prefixes: {
+        trace: "{cyan:[trace]} "
+    },
+    useLevelPrefixes: true,
+    custom: {
+        "file": function (string) {
+            return this.compile("{magenta:" + string + "}");
+        }
+    }
+});
 
 var File    = require("./lib/file").File;
 var file    = new File(null, logger);
 
-file.getFile(".travis.yml");
-file.getFile(".travis.yml");
+var trav = file.getFile("./templates/readme.md");
+
+var out = nunjucks.renderString(trav, { foo: 'bar' });
+
+console.log(out);
 
 var template = multi(function () {/*
 @section("shane")

@@ -2,4 +2,4 @@
 
 ###Gulpfile example
 
-    @include("./gulpfile.js")
+    {% include ".travis.yml" %}
