@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "chai": "^1.9.2",
+    "d-logger": "^1.0.0",
     "dustjs-linkedin": "^2.4.2",
     "gulp": "^3.8.8",
     "gulp-jscs": "^1.1.2",

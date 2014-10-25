@@ -8,14 +8,26 @@ body
   = p:item*
 
 item
-  = section / yield / include / buffer
+  = helper / reference / buffer
 
 buffer
   = e:eol w:ws*
   { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] }
-  / b:(!section !section_stop !include !yield c:. { return c })+
+  / b:(!helper !tag c:. { return c })+
   { return [ "buffer", {line: line(), column: column()}, b.join('') ] }
 
+/**
+ * ----------------------------------------------------------------------
+ * Helper Tags
+ * ----------------------------------------------------------------------
+ */
+
+helper
+  = ld t:[@#] n:identifier p:params rd a:after_tag {
+    return [t, {line: line(), column: column(), name: n.text, after: a, params: p}]
+  }
+
+/*
 include
   = "@include" name:tag_name a:after_tag {
       return ['include', {line: line(), column: column()}, name, ['after'].concat(a)]
@@ -33,22 +45,105 @@ yield
   = "@yield" name:tag_name a:after_tag {
       return ['yield', {line: line(), column: column()}, name, ['after'].concat(a)]
   }
+*/
 
 section_stop "section stop"
   = "@stop" b:eol? { return line() }
 
 after_tag
-  = w:ws? e:eol? { return [ w || '', e || '' ] }
-  
+  = w:ws? e:eol? { return [ w || '' + e || '' ] }
+
+key "key"
+  = h:[a-zA-Z_$] t:[0-9a-zA-Z_$-]*
+  { return h + t.join('') }
+
+params "params"
+  = p:(ws+ k:key "=" v:(number / identifier / inline) {return ["param", ["literal", k], v]})*
+  { return p }
+
+identifier "identifier"
+  = p:path     { var arr = ["path"].concat(p); arr.text = p[1].join('.'); return arr; }
+  / k:key      { var arr = ["key", k]; arr.text = k; return arr; }
+
+number "number"
+  = n:(float / integer) { return ['literal', n]; }
+
+float "float"
+  = l:integer "." r:integer+ { return parseFloat(l + "." + r.join('')); }
+
+integer "integer"
+  = digits:[0-9]+ { return parseInt(digits.join(""), 10); }
+
+path "path"
+  = k:key? d:(array_part / array)+ {
+    d = d[0];
+    if (k && d) {
+      d.unshift(k);
+      return [false, d].concat([['line', line()], ['col', column()]]);
+    }
+    return [true, d].concat([['line', line()], ['col', column()]]);
+  }
+  / "." d:(array_part / array)* {
+    if (d.length > 0) {
+      return [true, d[0]].concat([['line', line()], ['col', column()]]);
+    }
+    return [true, []].concat([['line', line()], ['col', column()]]);
+  }
+
+inline "inline"
+  = '"' '"'                 { return ["literal", ""].concat([['line', line()], ['col', column()]]) }
+  / '"' l:literal '"'       { return ["literal", l].concat([['line', line()], ['col', column()]]) }
+  / '"' p:inline_part+ '"'  { return ["body"].concat(p).concat([['line', line()], ['col', column()]]) }
+
+inline_part
+  = reference / l:literal { return ["buffer", l] }
+
+key "key"
+  = h:[a-zA-Z_$] t:[0-9a-zA-Z_$-]*
+  { return h + t.join('') }
+
+array "array"
+  = i:( lb a:( n:([0-9]+) {return n.join('')} / identifier) rb  {return a; }) nk: array_part? { if(nk) { nk.unshift(i); } else {nk = [i] } return nk; }
+
+array_part "array_part"
+  = d:("." k:key {return k})+ a:(array)? { if (a) { return d.concat(a); } else { return d; } }
+
+literal "literal"
+  = b:(!tag c:(esc / [^"]) {return c})+
+  { return b.join('') }
+
+reference "reference"
+  = ld n:identifier f:filters rd
+  { return ["reference", n, f].concat([['line', line()], ['col', column()]]) }
+
+tag
+  = ld ws* [#?^><+%:@/~%] ws* (!rd !eol .)+ ws* rd
+  / reference
+
+filters "filters"
+  = f:("|" n:key {return n})*
+  { return ["filters"].concat(f) }
+
+esc
+  = '\\"' { return '"' }
+
+rawcontent
+  = c:(char:. {return char})* {return c}
+
 quote
   = '"'
 
-open_brace
-  = '(' quote
+ld
+  = "{"
 
-close_brace
-  = quote ')'
+rd
+  = "}"
 
+lb
+  = "["
+
+rb
+  = "]"
 any
   = (after:. {return after})+
 
