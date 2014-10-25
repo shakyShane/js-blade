@@ -113,8 +113,9 @@ literal "literal"
   { return b.join('') }
 
 reference "reference"
-  = ld n:identifier f:filters rd
-  { return ["reference", n, f].concat([['line', line()], ['col', column()]]) }
+  = ld n:identifier f:filters rd a:after_tag {
+    return ["reference", {line: line(), column: column(), name: n.text, after: a, filters: f}]
+  }
 
 tag
   = ld ws* [#?^><+%:@/~%] ws* (!rd !eol .)+ ws* rd
@@ -122,7 +123,7 @@ tag
 
 filters "filters"
   = f:("|" n:key {return n})*
-  { return ["filters"].concat(f) }
+  { return f }
 
 esc
   = '\\"' { return '"' }

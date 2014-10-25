@@ -1,6 +1,7 @@
 var blade   = require("../lib/blade");
 var compile = blade.compile;
 var reset   = blade.reset;
+var context = blade.context;
 var dlog    = require("d-logger");
 
 var multi   = require("multiline");
@@ -35,7 +36,7 @@ Correctly
          */});
         var template = multi(function () {/*
 Before
-    {shane}
+    {@include src="shkitane.yml{shane}"}
 After
          */});
         var expected = multi(function () {/*

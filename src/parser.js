@@ -110,14 +110,16 @@ module.exports = (function() {
         peg$c60 = function(c) {return c},
         peg$c61 = function(b) { return b.join('') },
         peg$c62 = { type: "other", description: "reference" },
-        peg$c63 = function(n, f) { return ["reference", n, f].concat([['line', line()], ['col', column()]]) },
+        peg$c63 = function(n, f, a) {
+            return ["reference", {line: line(), column: column(), name: n.text, after: a, filters: f}]
+          },
         peg$c64 = /^[#?\^><+%:@\/~%]/,
         peg$c65 = { type: "class", value: "[#?\\^><+%:@\\/~%]", description: "[#?\\^><+%:@\\/~%]" },
         peg$c66 = { type: "other", description: "filters" },
         peg$c67 = "|",
         peg$c68 = { type: "literal", value: "|", description: "\"|\"" },
         peg$c69 = function(n) {return n},
-        peg$c70 = function(f) { return ["filters"].concat(f) },
+        peg$c70 = function(f) { return f },
         peg$c71 = "\\\"",
         peg$c72 = { type: "literal", value: "\\\"", description: "\"\\\\\\\"\"" },
         peg$c73 = function() { return '"' },
@@ -1452,7 +1454,7 @@ module.exports = (function() {
     }
 
     function peg$parsereference() {
-      var s0, s1, s2, s3, s4;
+      var s0, s1, s2, s3, s4, s5;
 
       peg$silentFails++;
       s0 = peg$currPos;
@@ -1464,9 +1466,15 @@ module.exports = (function() {
           if (s3 !== peg$FAILED) {
             s4 = peg$parserd();
             if (s4 !== peg$FAILED) {
-              peg$reportedPos = s0;
-              s1 = peg$c63(s2, s3);
-              s0 = s1;
+              s5 = peg$parseafter_tag();
+              if (s5 !== peg$FAILED) {
+                peg$reportedPos = s0;
+                s1 = peg$c63(s2, s3, s5);
+                s0 = s1;
+              } else {
+                peg$currPos = s0;
+                s0 = peg$c1;
+              }
             } else {
               peg$currPos = s0;
               s0 = peg$c1;
