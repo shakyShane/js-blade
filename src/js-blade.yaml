@@ -8,12 +8,12 @@ body
   = p:item*
 
 item
-  = helper / reference / buffer
+  = inline_helper / helper / reference / buffer
 
 buffer
   = e:eol w:ws*
   { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] }
-  / b:(!helper !tag c:. { return c })+
+  / b:(!tag c:. { return c })+
   { return [ "buffer", {line: line(), column: column()}, b.join('') ] }
 
 /**
@@ -22,33 +22,34 @@ buffer
  * ----------------------------------------------------------------------
  */
 
+inline_helper
+    = start:sec_tag_start ws? "/" rd a:after_tag {
+      return [start[0], {
+        line:   line(),
+        column: column(),
+        after:  start[0] === "#" ? e : a,
+        name:   start[1].text,
+        params: start[2]
+      }];
+  }
+
 helper
-    = ld t:[@#] n:identifier p:params rd a:after_tag {
-    return [t, {line: line(), column: column(), name: n.text, after: a, params: p}]
+    = start:sec_tag_start ws* rd b:body e:bodies end_tag:end_tag {
+      return [start[0], {
+        line:   line(),
+        column: column(),
+        after:  end_tag,
+        name:   start[1].text,
+        params: start[2],
+        body:   b,
+        bodies: e
+      }];
   }
 
-/*
-include
-  = "@include" name:tag_name a:after_tag {
-      return ['include', {line: line(), column: column()}, name, ['after'].concat(a)]
+sec_tag_start
+  = ld t:[#@] ws* n:identifier p:params {
+    return [t, n, p];
   }
-
-section
-  = "@section" name:tag_name eol:eol? body:body n:section_stop? {
-      return ['section', {line: line(), column: column()}, name, ['content', body], {end: n}]
-  }
-
-tag_name
-  = open_brace out:(!quote c:. {return c})+ close_brace { return out.join("") }
-
-yield
-  = "@yield" name:tag_name a:after_tag {
-      return ['yield', {line: line(), column: column()}, name, ['after'].concat(a)]
-  }
-*/
-
-section_stop "section stop"
-  = "@stop" b:eol? { return line() }
 
 key "key"
   = h:[a-zA-Z_$] t:[0-9a-zA-Z_$-]*
@@ -57,6 +58,10 @@ key "key"
 params "params"
   = p:(ws+ k:key "=" v:(number / identifier / inline) {return ["param", ["literal", k], v]})*
   { return p }
+
+bodies "bodies"
+  = p:(ld ":" k:key rd v:body {return ["param", ["literal", k], v]})*
+  { return ["bodies"].concat(p) }
 
 identifier "identifier"
   = p:path     { var arr = ["path"].concat(p); arr.text = p[1].join('.'); return arr; }
@@ -122,6 +127,11 @@ after_tag
 tag
   = ld ws* [#?^><+%:@/~%] ws* (!rd !eol .)+ ws* rd
   / reference
+
+end_tag "end tag"
+  = ld "/" ws* n:identifier ws* rd after:after_tag {
+    return after
+  }
 
 filters "filters"
   = f:("|" n:key {return n})*

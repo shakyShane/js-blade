@@ -36,7 +36,7 @@ Correctly
          */});
         var template = multi(function () {/*
 Before
-    {@include src="shkitane.yml{shane}"}
+    {@include src="shkitane.yml{shane}" /}
 After
          */});
         var expected = multi(function () {/*
