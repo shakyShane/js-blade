@@ -47,4 +47,38 @@ After
         var actual   = compile(input, {user: {name:"Shane"}});
         assert.equal(actual, expected);
     });
+    it("should render inside a ref section", function(){
+        var input = multi(function () {/*
+Hello
+{#user}{name.first}{/user}
+After
+         */});
+        var expected = "Hello\nShane\nAfter";
+        var actual   = compile(input, {
+            user: {
+                name: {
+                    first: "Shane",
+                    last: "Osbourne"
+                }
+            }
+        });
+        assert.equal(actual, expected);
+    });
+    it("should render inside a ref section", function(){
+        var input = multi(function () {/*
+Hello
+{#user}{#name}{first}{/name}{/user}
+After
+         */});
+        var expected = "Hello\nShane\nAfter";
+        var actual   = compile(input, {
+            user: {
+                name: {
+                    first: "Shane",
+                    last: "Osbourne"
+                }
+            }
+        });
+        assert.equal(actual, expected);
+    });
 });
