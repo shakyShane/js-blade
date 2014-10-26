@@ -58,4 +58,32 @@ After
         var actual   = compile(input, {greeting: "Hello"});
         assert.equal(actual, expected);
     });
+    it("can use paths", function(){
+        var input = multi(function () {/*
+Before
+{user.name}
+After
+         */});
+        var expected = "Before\nShane Osbourne\nAfter";
+        var actual   = compile(input, {
+            user: {
+                name: "Shane Osbourne"
+            }
+        });
+        assert.equal(actual, expected);
+    });
+    it("can use paths", function(){
+        var input = multi(function () {/*
+Before
+{users[0].name}
+After
+*/});
+        var expected = "Before\nShane Osbourne\nAfter";
+        var actual   = compile(input, {
+            users: [{
+                name: "Shane Osbourne"
+            }]
+        });
+        assert.equal(actual, expected);
+    });
 });

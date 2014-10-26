@@ -16,7 +16,16 @@ After
 */});
         var expected = "Before\nInside ref section\nAfter";
         var actual   = compile(input);
-        dlog(actual);
+        assert.equal(actual, expected);
+    });
+    it("should render inside a ref section", function(){
+        var input = multi(function () {/*
+Before
+{#user}{.} Osbourne{/user}
+After
+         */});
+        var expected = "Before\nShane Osbourne\nAfter";
+        var actual   = compile(input, {user: "Shane"});
         assert.equal(actual, expected);
     });
 });

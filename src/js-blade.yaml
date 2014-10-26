@@ -18,10 +18,9 @@ buffer
 
 /**
  * ----------------------------------------------------------------------
- * Helper Tags
+ * Inline helper - {@include src="myfile.js" /}
  * ----------------------------------------------------------------------
  */
-
 inline_helper
     = start:sec_tag_start ws? "/" rd a:after_tag {
       return [start[0], {
