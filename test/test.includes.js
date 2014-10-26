@@ -25,7 +25,7 @@ describe("@includes", function() {
         existsStub.restore();
         fsReadStub.restore();
     });
-    it.only("includes a file with indentation", function(){
+    it("includes a file with indentation", function(){
         var incFile  = multi(function () {/*
 Some nested
     Content
@@ -51,8 +51,8 @@ After
          */});
         fsReadStub.returns(incFile);
         var out      = compile(template);
-        dlog(out);
-        //assert.equal(out, expected);
+        //dlog(out);
+        assert.equal(out, expected);
     });
 //    it("can process included content", function () {
 //
