@@ -8,6 +8,9 @@ var multi   = require("multiline");
 var assert  = require("chai").assert;
 
 describe("Reference Section lookup {#name}", function(){
+    afterEach(function () {
+        reset();
+    })
     it("should render inside a ref section", function(){
         var input = multi(function () {/*
 Before

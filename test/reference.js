@@ -8,6 +8,9 @@ var multi   = require("multiline");
 var assert  = require("chai").assert;
 
 describe("Reference lookup", function(){
+    afterEach(function () {
+        reset();
+    })
     it("should replace simple variables", function(){
         var input    = "Hello {greeting}!";
         var expected = "Hello World!";
