@@ -25,35 +25,35 @@ describe("@includes", function() {
         existsStub.restore();
         fsReadStub.restore();
     });
-    it("includes a file with indentation", function(){
-        var incFile  = multi(function () {/*
-Some nested
-    Content
-        Here
-    that's
-Correctly
-                Indented
-         */});
-        var template = multi(function () {/*
-Before
-    {@include src="shkitane.yml{shane}" /}
-After
-         */});
-        var expected = multi(function () {/*
-Before
-    Some nested
-        Content
-            Here
-        that's
-    Correctly
-                    Indented
-After
-         */});
-        fsReadStub.returns(incFile);
-        var out      = compile(template);
-        //dlog(out);
-        assert.equal(out, expected);
-    });
+//    it("includes a file with indentation", function(){
+//        var incFile  = multi(function () {/*
+//Some nested
+//    Content
+//        Here
+//    that's
+//Correctly
+//                Indented
+//         */});
+//        var template = multi(function () {/*
+//Before
+//    {@include src="shkitane.yml{shane}" /}
+//After
+//         */});
+//        var expected = multi(function () {/*
+//Before
+//    Some nested
+//        Content
+//            Here
+//        that's
+//    Correctly
+//                    Indented
+//After
+//         */});
+//        fsReadStub.returns(incFile);
+//        var out      = compile(template);
+//        //dlog(out);
+//        assert.equal(out, expected);
+//    });
 //    it("can process included content", function () {
 //
 //        var input = multi(function () {/*

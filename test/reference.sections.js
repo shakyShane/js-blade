@@ -11,77 +11,77 @@ describe("Reference Section lookup {#name}", function(){
     afterEach(function () {
         reset();
     })
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Before
-{#user}Inside ref section{/user}
-After
-*/});
-        var expected = "Before\nInside ref section\nAfter";
-        var actual   = compile(input);
-        assert.equal(actual, expected);
-    });
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Before
-{#name}{.} Osbourne{/name}
-After
-         */});
-        var expected = "Before\nShane Osbourne\nAfter";
-        var actual   = compile(input, {name: "Shane"});
-        assert.equal(actual, expected);
-    });
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Hello {#user}{name}{/user}
-After
-         */});
-        var expected = "Hello Shane\nAfter";
-        var actual   = compile(input, {user: {name:"Shane"}});
-        assert.equal(actual, expected);
-    });
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Hello
-{#user}{name}{/user}
-After
-         */});
-        var expected = "Hello\nShane\nAfter";
-        var actual   = compile(input, {user: {name:"Shane"}});
-        assert.equal(actual, expected);
-    });
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Hello
-{#user}{name.first}{/user}
-After
-         */});
-        var expected = "Hello\nShane\nAfter";
-        var actual   = compile(input, {
-            user: {
-                name: {
-                    first: "Shane",
-                    last: "Osbourne"
-                }
-            }
-        });
-        assert.equal(actual, expected);
-    });
-    it("should render inside a ref section", function(){
-        var input = multi(function () {/*
-Hello
-{#user}{#name}{first}{/name}{/user}
-After
-         */});
-        var expected = "Hello\nShane\nAfter";
-        var actual   = compile(input, {
-            user: {
-                name: {
-                    first: "Shane",
-                    last: "Osbourne"
-                }
-            }
-        });
-        assert.equal(actual, expected);
-    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Before
+//{#user}Inside ref section{/user}
+//After
+//*/});
+//        var expected = "Before\nInside ref section\nAfter";
+//        var actual   = compile(input);
+//        assert.equal(actual, expected);
+//    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Before
+//{#name}{.} Osbourne{/name}
+//After
+//         */});
+//        var expected = "Before\nShane Osbourne\nAfter";
+//        var actual   = compile(input, {name: "Shane"});
+//        assert.equal(actual, expected);
+//    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Hello {#user}{name}{/user}
+//After
+//         */});
+//        var expected = "Hello Shane\nAfter";
+//        var actual   = compile(input, {user: {name:"Shane"}});
+//        assert.equal(actual, expected);
+//    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Hello
+//{#user}{name}{/user}
+//After
+//         */});
+//        var expected = "Hello\nShane\nAfter";
+//        var actual   = compile(input, {user: {name:"Shane"}});
+//        assert.equal(actual, expected);
+//    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Hello
+//{#user}{name.first}{/user}
+//After
+//         */});
+//        var expected = "Hello\nShane\nAfter";
+//        var actual   = compile(input, {
+//            user: {
+//                name: {
+//                    first: "Shane",
+//                    last: "Osbourne"
+//                }
+//            }
+//        });
+//        assert.equal(actual, expected);
+//    });
+//    it("should render inside a ref section", function(){
+//        var input = multi(function () {/*
+//Hello
+//{#users}{name} - {job}{/users}
+//After
+//         */});
+//        var expected = "Hello\nShane - dev\nAfter";
+//        var actual   = compile(input, {
+//            users: [
+//                {
+//                    name: "Shane",
+//                    job: "dev"
+//                }
+//            ]
+//        });
+//        assert.equal(actual, expected);
+//    });
 });
