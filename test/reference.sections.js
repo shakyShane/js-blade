@@ -21,11 +21,30 @@ After
     it("should render inside a ref section", function(){
         var input = multi(function () {/*
 Before
-{#user}{.} Osbourne{/user}
+{#name}{.} Osbourne{/name}
 After
          */});
         var expected = "Before\nShane Osbourne\nAfter";
-        var actual   = compile(input, {user: "Shane"});
+        var actual   = compile(input, {name: "Shane"});
+        assert.equal(actual, expected);
+    });
+    it("should render inside a ref section", function(){
+        var input = multi(function () {/*
+Hello {#user}{name}{/user}
+After
+         */});
+        var expected = "Hello Shane\nAfter";
+        var actual   = compile(input, {user: {name:"Shane"}});
+        assert.equal(actual, expected);
+    });
+    it("should render inside a ref section", function(){
+        var input = multi(function () {/*
+Hello
+{#user}{name}{/user}
+After
+         */});
+        var expected = "Hello\nShane\nAfter";
+        var actual   = compile(input, {user: {name:"Shane"}});
         assert.equal(actual, expected);
     });
 });
