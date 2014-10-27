@@ -8,7 +8,7 @@ body
   = p:item*
 
 item
-  = inline_helper / helper / reference / buffer
+  = inline_helper / helper / special / reference / buffer
 
 buffer
   = e:eol w:ws*
@@ -97,7 +97,7 @@ inline "inline"
   / '"' p:inline_part+ '"'  { return ["body"].concat(p).concat([['line', line()], ['col', column()]]) }
 
 inline_part
-  = reference / l:literal { return ["buffer", l] }
+  = special / reference / l:literal { return ["buffer", l] }
 
 key "key"
   = h:[a-zA-Z_$] t:[0-9a-zA-Z_$-]*
@@ -131,6 +131,10 @@ end_tag "end tag"
   = ld "/" ws* n:identifier ws* rd after:after_tag {
     return after
   }
+
+special "special"
+  = ld "~" k:key rd
+  { return ["special", k] }
 
 filters "filters"
   = f:("|" n:key {return n})*
