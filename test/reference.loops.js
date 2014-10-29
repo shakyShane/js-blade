@@ -86,11 +86,10 @@ describe("Reference Section lookup {#name}", function(){
 //    });
     it.only("should render inside a ref section loop", function(){
         var input = multi(function () {/*
-<p>Links:</p>
 <ul>
-    {#links sep="~n"}<li>{.}</li>{/link}
+    {#links sep="~n"}Hi there{/link}
 </ul>
-         */});
+*/});
         var expected = "Before\nWelcome Shane Osbourne\nAfter";
         var actual   = compile(input, {
             links: ["/about", "/blog"],

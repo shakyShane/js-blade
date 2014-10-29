@@ -12,7 +12,7 @@ item
 
 buffer
   = e:eol w:ws*
-  { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] }
+  { return [ "buffer", {line: line(), column: column()}, e + w.join('') ] }
   / b:(!tag c:. { return c })+
   { return [ "buffer", {line: line(), column: column()}, b.join('') ] }
 
@@ -32,16 +32,18 @@ inline_helper
       }];
   }
 
+
 helper
-    = start:sec_tag_start ws* rd b:body e:bodies end_tag:end_tag {
+    = start:sec_tag_start ws* rd a:after_tag b:body e:bodies end_tag:end_tag {
       return [start[0], {
-        line:   line(),
-        column: column(),
-        after:  end_tag,
-        name:   start[1].text,
-        params: start[2],
-        body:   b,
-        bodies: e
+        line:       line(),
+        column:     column(),
+        afterStart: a,
+        afterEnd:   end_tag,
+        name:       start[1].text,
+        params:     start[2],
+        body:       b,
+        bodies:     e
       }];
   }
 

@@ -1,0 +1,51 @@
+{
+    "firstLine": 1,
+    "firstColumn": 0,
+    "lastColumn": 6,
+    "lastLine": 3,
+    "type": "program",
+    "statements": [
+        {
+            "firstLine": 1,
+            "firstColumn": 0,
+            "lastColumn": 4,
+            "lastLine": 2,
+            "type": "content",
+            "string": "<div>\n",
+            "original": "<div>\n    ",
+            "leftStripped": true
+        },
+        {
+            "firstLine": 2,
+            "firstColumn": 4,
+            "lastColumn": 15,
+            "lastLine": 2,
+            "type": "partial",
+            "partialName": {
+                "firstLine": 2,
+                "firstColumn": 8,
+                "lastColumn": 13,
+                "lastLine": 2,
+                "type": "PARTIAL_NAME",
+                "name": "shane"
+            },
+            "strip": {
+                "left": false,
+                "right": false,
+                "inlineStandalone": true
+            },
+            "indent": "    "
+        },
+        {
+            "firstLine": 2,
+            "firstColumn": 15,
+            "lastColumn": 6,
+            "lastLine": 3,
+            "type": "content",
+            "string": "</div>",
+            "original": "\n</div>",
+            "rightStripped": true
+        }
+    ],
+    "strip": {}
+}

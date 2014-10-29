@@ -35,7 +35,7 @@ module.exports = (function() {
 
         peg$c0 = [],
         peg$c1 = peg$FAILED,
-        peg$c2 = function(e, w) { return [ "buffer", {line: line(), column: column()}, e, w.join('') ] },
+        peg$c2 = function(e, w) { return [ "buffer", {line: line(), column: column()}, e + w.join('') ] },
         peg$c3 = void 0,
         peg$c4 = { type: "any", description: "any character" },
         peg$c5 = function(c) { return c },
@@ -52,15 +52,16 @@ module.exports = (function() {
                 params: start[2]
               }];
           },
-        peg$c11 = function(start, b, e, end_tag) {
+        peg$c11 = function(start, a, b, e, end_tag) {
               return [start[0], {
-                line:   line(),
-                column: column(),
-                after:  end_tag,
-                name:   start[1].text,
-                params: start[2],
-                body:   b,
-                bodies: e
+                line:       line(),
+                column:     column(),
+                afterStart: a,
+                afterEnd:   end_tag,
+                name:       start[1].text,
+                params:     start[2],
+                body:       b,
+                bodies:     e
               }];
           },
         peg$c12 = /^[#@]/,
@@ -542,7 +543,7 @@ module.exports = (function() {
     }
 
     function peg$parsehelper() {
-      var s0, s1, s2, s3, s4, s5, s6;
+      var s0, s1, s2, s3, s4, s5, s6, s7;
 
       s0 = peg$currPos;
       s1 = peg$parsesec_tag_start();
@@ -556,15 +557,21 @@ module.exports = (function() {
         if (s2 !== peg$FAILED) {
           s3 = peg$parserd();
           if (s3 !== peg$FAILED) {
-            s4 = peg$parsebody();
+            s4 = peg$parseafter_tag();
             if (s4 !== peg$FAILED) {
-              s5 = peg$parsebodies();
+              s5 = peg$parsebody();
               if (s5 !== peg$FAILED) {
-                s6 = peg$parseend_tag();
+                s6 = peg$parsebodies();
                 if (s6 !== peg$FAILED) {
-                  peg$reportedPos = s0;
-                  s1 = peg$c11(s1, s4, s5, s6);
-                  s0 = s1;
+                  s7 = peg$parseend_tag();
+                  if (s7 !== peg$FAILED) {
+                    peg$reportedPos = s0;
+                    s1 = peg$c11(s1, s4, s5, s6, s7);
+                    s0 = s1;
+                  } else {
+                    peg$currPos = s0;
+                    s0 = peg$c1;
+                  }
                 } else {
                   peg$currPos = s0;
                   s0 = peg$c1;

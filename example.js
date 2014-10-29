@@ -1,5 +1,6 @@
 var multi   = require("multiline");
 var tfunk     = require("tfunk");
+var dlog     = require("d-logger");
 var nunjucks = require("nunjucks");
 var blade     = require("./lib/blade").compile;
 //var logger    = require("eazy-logger").Logger({
@@ -65,9 +66,10 @@ console.timeEnd("nunjucks");
 
 var dust = require("dustjs-linkedin");
 console.time("dust");
-var out = dust.renderSource(file, {}, function () {
+var out = dust.renderSource(file, {}, function (err, out) {
     console.timeEnd("dust");
 });
+
 
 //console.log("~~~~~~~~~~ Handlebars ~~~~~~~~~~~~");
 //console.log(out.replace(/ /g, tfunk('{magenta:.}')));
